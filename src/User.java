@@ -83,7 +83,7 @@ public class User implements MarketPlaceAccess{
                 System.out.println("Product added successfully!");
                 }
             }
-        
+        //will figure logic out
 //            System.out.print("Enter product type (1: Vegetable, 2: Fruit, 3: Meat): ");
 //            int type = scanner.nextInt();
 //            scanner.nextLine(); // consume newline
