@@ -16,11 +16,11 @@ public class LoginSystem {
     
     public static Object authMethod(String username, String password){
         if(username.equals(MANAGER_USERNAME) && password.equals(MANAGER_PASSWORD)){
-            Manager newManager = new Manager();
-            return newManager;
+//            Manager newManager = new Manager();
+            return Manager.getInstance();
         } 
         else if(username.equals(USER_USERNAME) && password.equals(USER_PASSWORD)){
-            User newUser = new User();
+            User newUser = new User(Manager.getInstance());
             return newUser;
         }
         else{

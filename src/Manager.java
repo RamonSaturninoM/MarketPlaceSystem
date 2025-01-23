@@ -7,6 +7,7 @@ import java.util.Scanner;
  */
 public class Manager implements MarketPlaceAccess{
     private ArrayList<Product> inventory;
+    private static Manager instance;
     
     public Manager(){
         inventory = new ArrayList<>();
@@ -96,32 +97,74 @@ public class Manager implements MarketPlaceAccess{
         
         System.out.print("Enter product name: ");
         String name = scanner.nextLine();
-        
-        System.out.print("Enter weight (kg): ");
-        double weight = scanner.nextDouble();
-        
-//        System.out.print("Enter price per kg: ");
-//        double pricePerKg = scanner.nextDouble();
-        
-        System.out.print("Enter product type (1: Vegetable, 2: Fruit, 3: Meat): ");
-        int type = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-        
-        if (name != null) {
-            removeProduct(name);  // Now calling the correct method with a Product parameter
+    
+        Product productToRemove = searchProduct(name);
+        if (productToRemove != null) {
+            removeProduct(productToRemove);
             System.out.println("Product removed successfully!");
+        }   else {
+            System.out.println("Product not found!");
         }
     }
     
     public Product searchProduct(String name){
-        return null;
+        // Find and remove the product from inventory by name
+        Product productToRemove = null;
+        
+        for (Product product : inventory) {
+            if (product.getName().equals(name)) {
+            productToRemove = product;
+            break;
+            }
+        }
+        return productToRemove;
     }
     
     public void viewInventory(){
-        System.out.println(inventory);
+        if (inventory.isEmpty()) {
+        System.out.println("Current Inventory: No products available.");
+        } else {
+            System.out.println("Current Inventory: ");
+            for (Product product : inventory) {
+                System.out.println(product.toString()); // Assuming toString() is overridden in Product subclasses
+            }
+        }
     }
     
     public void adjustWeight(Product product, double weight){
-        
+        Scanner scanner = new Scanner(System.in);
+    
+        System.out.print("Enter product name: ");
+        String name = scanner.nextLine();
+    
+        Product productToUpdate = searchProduct(name);
+    
+        if (productToUpdate != null) {
+            System.out.println("Current weight: " + productToUpdate.getWeight() + "kg");
+            System.out.print("Enter weight to subtract (kg): ");
+            double weightToSubtract = scanner.nextDouble();
+
+            if (weightToSubtract <= 0) {
+                System.out.println("Error: Weight must be positive!");
+            } else if (weightToSubtract > productToUpdate.getWeight()) {
+                System.out.println("Error: Cannot subtract more than available weight!");
+            } else if (weightToSubtract == productToUpdate.getWeight()) {
+                removeProduct(productToUpdate);
+                System.out.println("Product removed as weight is now 0!");
+            } else {
+                productToUpdate.setWeight(productToUpdate.getWeight() - weightToSubtract);
+                System.out.printf("Weight updated! New weight: %.2fkg%n", productToUpdate.getWeight());
+            }
+        } else {
+            System.out.println("Product not found!");
+        }
     }
+    
+    public static Manager getInstance() {
+        if (instance == null) {
+            instance = new Manager(); // Create the instance if it doesn't exist
+        }
+        return instance; // Return the singleton instance
+    }
+
 }
