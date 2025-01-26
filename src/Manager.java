@@ -23,22 +23,31 @@ public class Manager implements MarketPlaceAccess{
             System.out.println("3. Remove Product");
             System.out.println("4. Logout\n");
             
-            System.out.print("Select an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
-            
-            switch (choice) {
-                case 1:
-                    addNewProduct();
-                    break;
-                case 2:
-                    viewInventory();
-                    break;
-                case 3:
-                    removeProdHelper();
-                    break;
-                case 4:
-                    return;
+            try{
+                System.out.print("Select an option: ");
+                int choice = scanner.nextInt();
+                
+                if (choice < 1 || choice > 4) {
+                    System.out.println("Invalid choice! Please select a number between 1 and 4.");
+                    continue;
+                }
+                scanner.nextLine(); // consume newline            
+                switch (choice) {
+                    case 1:
+                        addNewProduct();
+                        break;
+                    case 2:
+                        viewInventory();
+                        break;
+                    case 3:
+                        removeProdHelper();
+                        break;
+                    case 4:
+                        return;
+            }
+            }catch(java.util.InputMismatchException e){
+                System.out.println("Invalid input! Please enter a valid number.");
+                scanner.nextLine();
             }
         }
     }

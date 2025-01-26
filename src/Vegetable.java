@@ -12,6 +12,9 @@ public class Vegetable extends Product{
     
     @Override
     public double calculatePrice(){
+        if(isOrganic()){
+            return pricePerKg * 1.5;
+        }
         return pricePerKg;
     }
     

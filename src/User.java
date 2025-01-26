@@ -22,29 +22,37 @@ public class User implements MarketPlaceAccess{
             System.out.println("\n=== User Menu ===");
             System.out.println("1. View Products");
             System.out.println("2. Add to Cart");
-            System.out.println("3. View Cart");
-            System.out.println("4. Checkout");
-            System.out.println("5. Logout\n");
+            System.out.println("3. Remove from Cart");
+            System.out.println("4. View Cart");
+            System.out.println("5. Checkout");
+            System.out.println("6. Logout\n");
             
-            System.out.print("Select an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
-            
-            switch (choice) {
-                case 1:
-                    viewInventory();
-                    break;
-                case 2:
-                    addItemToCart();
-                    break;
-                case 3:
-                    viewCart();
-                    break;
-                case 4:
-                    checkout();
-                    break;
-                case 5:
-                    return;
+            try{
+                System.out.print("Select an option: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+
+                switch (choice) {
+                    case 1:
+                        viewInventory();
+                        break;
+                    case 2:
+                        addItemToCart();
+                        break;
+                    case 3:
+                        rmItemFromCart();
+                        break;
+                    case 4:
+                        viewCart();
+                    case 5:
+                        checkout();
+                        break;
+                    case 6:
+                        return;
+                }
+            }catch(java.util.InputMismatchException e){
+                System.out.println("Invalid input! Please enter a valid number.");
+                scanner.nextLine();                
             }
         }
     }
@@ -96,19 +104,61 @@ public class User implements MarketPlaceAccess{
                 if (newProduct != null) {
                     addToCart(newProduct, weight);
                     System.out.println(newProduct);
+                    // update inventory
+                    product.updateStock(weight);
                     //product.updateStock(weight); // Reduce stock in inventory
                     System.out.println("Product added successfully to cart!");
                 }
+                if (product.getWeight() == 0) {
+                    manager.removeProduct(product);
+                    System.out.println("Product removed from inventory as it is out of stock.");
+            }
             }
         } else {
             System.out.println("Item not in stock.");
         } 
     }
     
-    public void removeFromCart(Product product) {
-        // Implement remove logic
+    public void removeFromCart(CartItem cartItem) {
+        cart.remove(cartItem);
     }
     
+    public void rmItemFromCart(){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter product name to remove from cart: ");
+        String name = scanner.nextLine();
+
+        CartItem itemToRemove = null;
+
+        // Find the item in the cart
+        for (CartItem item : cart) {
+            if (item.getProduct().getName().equalsIgnoreCase(name)) {
+                itemToRemove = item;
+                break;
+            }
+        }
+
+        if (itemToRemove != null) {
+            // Restore stock in inventory
+            Product product = itemToRemove.getProduct();
+            double quantityToReturn = itemToRemove.getQuantity();
+
+            Product inventoryProduct = manager.searchProduct(product.getName());
+            if (inventoryProduct != null) {
+                inventoryProduct.updateStock(-quantityToReturn);  // Add the quantity back to inventory
+//            } else {
+//                // If product was removed from inventory, re-add it
+//                manager.addNewProduct(product.getName(), quantityToReturn, product.calculatePrice(), product.isOrganic());
+//            }
+
+            }removeFromCart(itemToRemove);  // Remove from cart
+            System.out.println("Successfully removed " + quantityToReturn + " kg of " + product.getName() + " from the cart and added back to inventory.");
+        } else {
+            System.out.println("Product not found in cart.");
+        }
+    }
+
     public void viewCart() {
         System.out.println("Current cart:");
         for (CartItem item : cart) {

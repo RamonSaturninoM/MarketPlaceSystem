@@ -30,5 +30,13 @@ public abstract class Product {
         return weight;
     }
     
+    public void updateStock(double quantity) {
+        if (quantity > weight) {
+            System.out.println("Error: Not enough stock available.");
+        } else {
+            weight -= quantity;  // Reduce the available weight
+        }
+    }
+    
     public abstract double calculatePrice();
 }
