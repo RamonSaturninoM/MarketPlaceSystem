@@ -19,7 +19,7 @@ public abstract class Product {
     }
     
     public String toString(){
-        return name + " - " + weight + "kg";
+        return name + ", Weight: " + weight + " kg, Price: $" + pricePerKg + "/kg";
     }
     
     public void setWeight(double weight){

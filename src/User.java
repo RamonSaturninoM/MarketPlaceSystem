@@ -71,44 +71,38 @@ public class User implements MarketPlaceAccess{
         String name = scanner.nextLine();
         
         Product product = manager.searchProduct(name); //we got the product
-        if(!product.equals(null)){
+        System.out.println(product);
+        if (product != null) {
             System.out.print("Enter weight (kg): ");
             double weight = scanner.nextDouble();
-            if(product.weight < weight){
+
+            if (product.getWeight() < weight) {
                 System.out.println("Item cannot be added, because you exceed the amount in inventory");
                 return;
-            }else{
-                if (product != null) {
-                addToCart(product, weight);  // Now calling the correct method with a Product parameter
-                System.out.println("Product added successfully!");
+            } else {
+                Product newProduct = null;
+
+                if (product instanceof Vegetable) {
+                    Vegetable veg = (Vegetable) product;
+                    newProduct = new Vegetable(product.getName(), weight, product.calculatePrice(), veg.isOrganic());
+                } else if (product instanceof Fruit) {
+                    Fruit fruit = (Fruit) product;
+                    newProduct = new Fruit(product.getName(), weight, product.calculatePrice(), fruit.getSeason());
+                } else if (product instanceof Meat) {
+                    Meat meat = (Meat) product;
+                    newProduct = new Meat(product.getName(), weight, product.calculatePrice(), meat.getCutType());
+                }
+
+                if (newProduct != null) {
+                    addToCart(newProduct, weight);
+                    System.out.println(newProduct);
+                    //product.updateStock(weight); // Reduce stock in inventory
+                    System.out.println("Product added successfully to cart!");
                 }
             }
-        //will figure logic out
-//            System.out.print("Enter product type (1: Vegetable, 2: Fruit, 3: Meat): ");
-//            int type = scanner.nextInt();
-//            scanner.nextLine(); // consume newline
-//            
-//           // product = null;
-//            switch (type) {
-//                case 1:
-//                    System.out.print("Is organic? (true/false): ");
-//                    boolean isOrganic = scanner.nextBoolean();
-//                    product = new Vegetable(name, weight, estimatePrice(product, weight), isOrganic);
-//                    break;
-//                case 2:
-//                    System.out.print("Enter season: ");
-//                    String season = scanner.nextLine();
-//                    product = new Fruit(name, weight, estimatePrice(product, weight), season);
-//                    break;
-//                case 3:
-//                    System.out.print("Enter cut type: ");
-//                    String cutType = scanner.nextLine();
-//                    product = new Meat(name, weight, estimatePrice(product, weight), cutType);
-//                    break;            
-//            }
-            
-            
-        }        
+        } else {
+            System.out.println("Item not in stock.");
+        } 
     }
     
     public void removeFromCart(Product product) {
@@ -116,7 +110,12 @@ public class User implements MarketPlaceAccess{
     }
     
     public void viewCart() {
-        System.out.println("Current cart: " + cart);
+        System.out.println("Current cart:");
+        for (CartItem item : cart) {
+            System.out.println(item.getProduct().getName()
+                    + ", Weight: " + item.getQuantity() + " kg, Total Price: $"
+                    + String.format("%.2f", item.getTotalPrice()));
+        }
     }
     
     public void checkout() {

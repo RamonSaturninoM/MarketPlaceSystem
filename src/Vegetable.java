@@ -14,4 +14,8 @@ public class Vegetable extends Product{
     public double calculatePrice(){
         return pricePerKg;
     }
+    
+    public boolean isOrganic(){
+        return isOrganic;
+    }
 }

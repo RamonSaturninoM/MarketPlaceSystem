@@ -14,4 +14,8 @@ public class Meat extends Product{
     public double calculatePrice(){
         return pricePerKg;
     }
+    
+    public String getCutType(){
+        return cutType;
+    }
 }

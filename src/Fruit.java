@@ -14,4 +14,8 @@ public class Fruit extends Product{
     public double calculatePrice(){
         return pricePerKg;
     }
+    
+    public String getSeason(){
+        return season;
+    }
 }
