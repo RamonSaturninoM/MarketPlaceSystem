@@ -12,7 +12,10 @@ public class Fruit extends Product{
     
     @Override
     public double calculatePrice(){
-        return pricePerKg;
+        if(season.equals("summer") || season.equals("spring")){
+            return pricePerKg;
+        }
+        return pricePerKg*1.5;
     }
     
     public String getSeason(){

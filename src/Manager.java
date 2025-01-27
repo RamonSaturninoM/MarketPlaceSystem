@@ -61,6 +61,7 @@ public class Manager implements MarketPlaceAccess{
         
         System.out.print("Enter product name: ");
         String name = scanner.nextLine();
+        name.toLowerCase();
         
         System.out.print("Enter weight (kg): ");
         double weight = scanner.nextDouble();

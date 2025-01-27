@@ -77,6 +77,7 @@ public class User implements MarketPlaceAccess{
         
         System.out.print("Enter product name: ");
         String name = scanner.nextLine();
+        name.toLowerCase();
         
         Product product = manager.searchProduct(name); //we got the product
         System.out.println(product);
