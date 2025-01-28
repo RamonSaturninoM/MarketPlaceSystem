@@ -106,7 +106,6 @@ public class User implements MarketPlaceAccess{
         name.toLowerCase();
         
         Product product = manager.searchProduct(name); //we got the product
-        System.out.println(product);
         if (product != null) {
             System.out.print("Enter weight (kg): ");
             double weight = scanner.nextDouble();

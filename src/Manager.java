@@ -98,7 +98,7 @@ public class Manager implements MarketPlaceAccess{
         }
         
         if (product != null) {
-            addProduct(product);  // Now calling the correct method with a Product parameter
+            addProduct(product); 
             System.out.println("Product added successfully!");
         }
     }
