@@ -1,14 +1,20 @@
 import java.util.Scanner;
 
 /**
- *
+ * This class acts as the main class to make the calls to every other class
+ * needed to run.
+ * 
  * @author ramonsaturnino
  */
 public class LoginSystem {
     
     /**
      * The below declarations are the hard coded credentials provided by professor.
+     * I used them to authenticate user and manager accounts.
+     * 
+     * @author ramonsaturnino
     */
+    
     private static final String MANAGER_USERNAME = "admin"; 
     private static final String MANAGER_PASSWORD = "admin123"; 
     private static final String USER_USERNAME = "user"; 

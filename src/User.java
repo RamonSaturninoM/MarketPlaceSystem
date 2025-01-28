@@ -2,9 +2,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
+ * This class is designed to handle every functionality for each user
+ * it implements the MarketPlaceAccess interface and uses different 
+ * methods to accomplish a smooth system.
+ * 
  * @author ramonsaturnino
  */
+
 public class User implements MarketPlaceAccess{
     private ArrayList<CartItem> cart;
     
@@ -63,21 +67,36 @@ public class User implements MarketPlaceAccess{
         }
     }
     
+    /**
+     * The viewInventory() methods calls the inventory object from the manager class
+     * to view the products in stock, I called the method using a manager class 
+     * instance. The expected output is void, just displaying text.
+     * @author ramonsaturnino
+     */
     public void viewInventory() {
         manager.viewInventory(); // Call the Manager's viewInventory method
     }
     
+    /**
+     * This method takes an object "Product" and a double value "quantity"
+     * to add the item to the ArrayList "Cart".
+     * 
+     * @param product
+     * @param quantity 
+     * @author ramonsaturnino
+     */    
     public void addToCart(Product product, double quantity) {
         cart.add(new CartItem(product, quantity));
     }    
     
-//    //Following code is experimental; Will delete and implement in product or manager class.
-//    public double estimatePrice(Product prod, double weight){
-//            double expectedPrice = prod.pricePerKg * weight;
-//            return expectedPrice;
-//        }
-//    // Stops here
-    
+    /**
+     * This is a helper function for addToCart(), since we first have to ask
+     * the user what he/she wants to add, and then actually add to cart
+     * because of that, is not recommendable to use addToCart() by itself
+     * expecting parameters. 
+     * 
+     * @author ramonsaturnino
+     */    
     public void addItemToCart(){
         Scanner scanner = new Scanner(System.in);                
         
@@ -127,10 +146,22 @@ public class User implements MarketPlaceAccess{
         } 
     }
     
+    /**
+     * This method takes an object "CartItem"
+     * to remove the item from the ArrayList "Cart".
+     * 
+     * @param cartItem 
+     * @author ramonsaturnino
+     */
     public void removeFromCart(CartItem cartItem) {
         cart.remove(cartItem);
     }
     
+    /**
+     * Helper function for removeFromCart().
+     * 
+     * @author ramonsaturnino
+     */
     public void rmItemFromCart(){
         Scanner scanner = new Scanner(System.in);
 
@@ -155,18 +186,19 @@ public class User implements MarketPlaceAccess{
             Product inventoryProduct = manager.searchProduct(product.getName());
             if (inventoryProduct != null) {
                 inventoryProduct.updateStock(-quantityToReturn);  // Add the quantity back to inventory
-//            } else {
-//                // If product was removed from inventory, re-add it
-//                manager.addNewProduct(product.getName(), quantityToReturn, product.calculatePrice(), product.isOrganic());
-//            }
-
-            }removeFromCart(itemToRemove);  // Remove from cart
+            }
+            removeFromCart(itemToRemove);  // Remove from cart
             System.out.println("Successfully removed " + quantityToReturn + " kg of " + product.getName() + " from the cart and added back to inventory.");
         } else {
             System.out.println("Product not found in cart.");
         }
     }
-
+    
+    /**
+     * Displays every item in cart.
+     * 
+     * @author ramonsaturnino
+     */
     public void viewCart() {
         System.out.println("Current cart:");
         for (CartItem item : cart) {
@@ -176,6 +208,11 @@ public class User implements MarketPlaceAccess{
         }
     }
     
+    /**
+     * Handles payment confirmation.
+     * 
+     * @author ramonsaturnino
+     */
     public void checkout() {
         if (cart.isEmpty()) {
             System.out.println("Your cart is empty. Add items before checking out.");

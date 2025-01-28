@@ -2,9 +2,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
+ * This class is in charge to run every functionality per each Manager
+ * account and display the options menu.
+ * 
  * @author ramonsaturnino
  */
+
 public class Manager implements MarketPlaceAccess{
     private ArrayList<Product> inventory;
     private static Manager instance;
