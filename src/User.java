@@ -31,6 +31,11 @@ public class User implements MarketPlaceAccess{
                 System.out.print("Select an option: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine(); // consume newline
+                
+                if (choice < 1 || choice > 6) {
+                    System.out.println("Invalid choice! Please select a number between 1 and 6.");
+                    continue;
+                }
 
                 switch (choice) {
                     case 1:
@@ -44,6 +49,7 @@ public class User implements MarketPlaceAccess{
                         break;
                     case 4:
                         viewCart();
+                        break;
                     case 5:
                         checkout();
                         break;
@@ -65,18 +71,19 @@ public class User implements MarketPlaceAccess{
         cart.add(new CartItem(product, quantity));
     }    
     
-    //Following code is experimental; Will delete and implement in product or manager class.
-    public double estimatePrice(Product prod, double weight){
-            double expectedPrice = prod.pricePerKg * weight;
-            return expectedPrice;
-        }
-    // Stops here
+//    //Following code is experimental; Will delete and implement in product or manager class.
+//    public double estimatePrice(Product prod, double weight){
+//            double expectedPrice = prod.pricePerKg * weight;
+//            return expectedPrice;
+//        }
+//    // Stops here
     
     public void addItemToCart(){
         Scanner scanner = new Scanner(System.in);                
         
         System.out.print("Enter product name: ");
         String name = scanner.nextLine();
+        System.out.println("name");
         name.toLowerCase();
         
         Product product = manager.searchProduct(name); //we got the product
@@ -164,12 +171,38 @@ public class User implements MarketPlaceAccess{
         System.out.println("Current cart:");
         for (CartItem item : cart) {
             System.out.println(item.getProduct().getName()
-                    + ", Weight: " + item.getQuantity() + " kg, Total Price: $"
+                    + ", Weight: " + item.getQuantity() + " kg, Price: $"
                     + String.format("%.2f", item.getTotalPrice()));
         }
     }
     
     public void checkout() {
-        // Implement checkout logic
+        if (cart.isEmpty()) {
+            System.out.println("Your cart is empty. Add items before checking out.");
+            return;
+        }
+
+        System.out.println("\n=== Checkout Summary ===");
+        viewCart(); // Display all items in the cart
+
+        // Calculate the total price
+        double total = 0.0;
+        for (CartItem item : cart) {
+            total += item.getTotalPrice();
+        }
+        System.out.println("Total: $" + String.format("%.2f", total));
+
+        // Ask for confirmation
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Confirm checkout (Y/N)? ");
+        String confirmation = scanner.nextLine().trim().toUpperCase();
+
+        if (confirmation.equals("Y")) {
+            // Clear the cart and finalize the purchase
+            cart.clear();
+            System.out.println("Thank you for your purchase! Your order total is $" + String.format("%.2f", total));
+        } else {
+            System.out.println("Checkout cancelled. Your cart remains unchanged.");
+        }
     }
 }

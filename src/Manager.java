@@ -83,11 +83,13 @@ public class Manager implements MarketPlaceAccess{
             case 2:
                 System.out.print("Enter season: ");
                 String season = scanner.nextLine();
+                season.toLowerCase();
                 product = new Fruit(name, weight, pricePerKg, season);
                 break;
             case 3:
                 System.out.print("Enter cut type: ");
                 String cutType = scanner.nextLine();
+                cutType.toLowerCase();
                 product = new Meat(name, weight, pricePerKg, cutType);
                 break;
         }
